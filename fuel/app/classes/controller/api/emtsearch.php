@@ -16,6 +16,17 @@
 				return $this->error( 'No search criteria!' );
 			}
 
+			// see if we have prior results cached, just so we don't hammer their servers for no reason
+			$cache_key = 'api_emtsearch__' . $first_name . '_' . $last_name;
+			try {
+				$results = Cache::get( $cache_key );
+
+				return $this->response( $results );
+			}
+			catch( \CacheNotFoundException $e ) {
+				// nothing, we'll just go on
+			}
+
 			// first, see if we have a saved session cookie
 			try {
 				$session_cookie = Cache::get( 'api_emtsearch__session_cookie' );
@@ -35,6 +46,8 @@
 				if ( !isset( $session_cookie ) ) {
 					return $this->error( 'Unable to start session!' );
 				}
+
+				Cache::set( 'api_emtsearch__session_cookie', $session_cookie, Date::MINUTE * 15 );
 
 			}
 
@@ -137,6 +150,10 @@
 
 			}
 
+			$response = array( 'status' => 'ok', 'people' => $people );
+
+			// save the response before we return it
+			Cache::set( $cache_key, $response, Date::MINUTE * 10 );
 			return $this->response( array( 'status' => 'ok', 'people' => $people ) );
 
 		}
