@@ -17,7 +17,7 @@
 			}
 
 			// see if we have prior results cached, just so we don't hammer their servers for no reason
-			$cache_key = 'api_emtsearch__' . $first_name . '_' . $last_name;
+			$cache_key = 'api_emtsearch__' . sha1( implode( '|', array( $first_name, $last_name ) ) );
 			try {
 				$results = Cache::get( $cache_key );
 
