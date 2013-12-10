@@ -7,3 +7,6 @@
 [submodule "fuel/packages/multibyte"]
 	path = fuel/packages/multibyte
 	url = git@github.com:chrismeller/multibyte.git
+[submodule "fuel/app/vendor/ventureloop"]
+	path = fuel/app/vendor/ventureloop
+	url = git@github.com:chrismeller/ventureloop.git
