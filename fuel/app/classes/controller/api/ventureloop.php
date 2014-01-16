@@ -18,6 +18,8 @@
 		
 		public function get_atom ( $criteria, $location ) {
 			
+			$location = urldecode( $location );
+			
 			// see if we have prior results cached, just so we don't hammer their servers for no reason
 			$cache_key = 'api_ventureloop_' . sha1( implode( '|', array( $criteria, $location ) ) );
 			try {
